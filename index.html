@@ -9,8 +9,8 @@
         margin: 0;
         padding: 0;
         font-family: "Cairo", sans-serif;
-        background-color: #b3d9ff; /* أزرق فاتح */
-        color: #5a189a; /* موف غامق */
+        background-color: #b3d9ff;
+        color: #5a189a;
     }
 
     #welcomeScreen {
@@ -142,7 +142,6 @@
         transform: scale(1.05);
     }
 
-    /* زر الفيديو */
     #watchBtn {
         background-color: #5a189a;
         color: #fff;
@@ -165,6 +164,10 @@
         margin-bottom: 20px;
     }
 
+    #quiz {
+        display: none;
+        margin-top: 20px;
+    }
 </style>
 </head>
 <body>
@@ -179,6 +182,32 @@
 <!-- المحتوى -->
 <div id="content">
 
+    <!-- الصف الأول الإعدادي -->
+    <div class="card">
+        <h2>الصف الأول الإعدادي</h2>
+        <p>هذا الدرس مخصص للصف الأول الإعدادي للتعرف على أساسيات لغة بايثون.</p>
+    </div>
+
+    <!-- الأهداف العامة -->
+    <div class="card">
+        <h2>الأهداف العامة للمنهج</h2>
+        <ul>
+            <li>فهم أساسيات لغة بايثون واستخدامها في البرمجة.</li>
+            <li>تطوير التفكير المنطقي وحل المشكلات باستخدام البرمجة.</li>
+        </ul>
+    </div>
+
+    <!-- الأهداف الخاصة -->
+    <div class="card">
+        <h2>الأهداف الخاصة للصف الأول الإعدادي</h2>
+        <ul>
+            <li>التعرف على المتغيرات وأنواع البيانات في بايثون.</li>
+            <li>كتابة برامج بسيطة باستخدام الحلقات والشروط.</li>
+            <li>تطبيق المفاهيم الأساسية في حل مسائل برمجية.</li>
+        </ul>
+    </div>
+
+    <!-- باقي البطاقات كما في الكود الأصلي -->
     <div class="card">
         <h2>ما هي لغة بايثون؟</h2>
         <p>لغة <strong>بايثون (Python)</strong> هي لغة برمجة عالية المستوى وسهلة القراءة، تُستخدم في تطوير المواقع، والذكاء الاصطناعي، وتحليل البيانات، والأمن السيبراني، وغير ذلك الكثير.</p>
@@ -250,8 +279,54 @@
     <div id="videoContainer">
       <video id="myVideo" width="100%" controls playsinline preload="metadata">
         <source src="python_intro.mp4" type="video/mp4">
-       
       </video>
+    </div>
+
+    <!-- زر الاختبار -->
+    <button id="quizBtn" onclick="showQuiz()">أداء الاختبار</button>
+
+    <!-- الاختبار -->
+    <div id="quiz">
+        <form id="quizForm">
+            <div class="quiz-question">
+                <p>1. ما هي لغة بايثون؟</p>
+                <input type="radio" name="q1" value="خطأ"> لغة للتصميم فقط<br>
+                <input type="radio" name="q1" value="صح"> لغة برمجة عامة<br>
+                <input type="radio" name="q1" value="خطأ2"> برنامج للحاسوب<br>
+            </div>
+
+            <div class="quiz-question">
+                <p>2. أي من التالي يمثل متغير صحيح؟</p>
+                <input type="radio" name="q2" value="صح"> myVar<br>
+                <input type="radio" name="q2" value="خطأ"> 123Var<br>
+                <input type="radio" name="q2" value="خطأ2"> if<br>
+            </div>
+
+            <div class="quiz-question">
+                <p>3. كيف نكتب تعليق في بايثون؟</p>
+                <input type="radio" name="q3" value="خطأ"> // تعليق<br>
+                <input type="radio" name="q3" value="صح"> # تعليق<br>
+                <input type="radio" name="q3" value="خطأ2"> ''' تعليق '''<br>
+            </div>
+
+            <div class="quiz-question">
+                <p>4. أي من التالي نوع بيانات صحيح؟</p>
+                <input type="radio" name="q4" value="صح"> int<br>
+                <input type="radio" name="q4" value="خطأ"> letter<br>
+                <input type="radio" name="q4" value="خطأ2"> texty<br>
+            </div>
+
+            <div class="quiz-question">
+                <p>5. ما الذي يستخدم للتحكم في تكرار تنفيذ كود؟</p>
+                <input type="radio" name="q5" value="صح"> حلقة loop<br>
+                <input type="radio" name="q5" value="خطأ"> شرط if<br>
+                <input type="radio" name="q5" value="خطأ2"> دالة print<br>
+            </div>
+
+            <button type="button" onclick="checkQuiz()">إرسال الإجابات</button>
+        </form>
+
+        <p id="quizResult"></p>
     </div>
 
     <button class="close-btn" onclick="closePage()">تم الاطلاع</button>
@@ -278,7 +353,7 @@ function closePage() {
     window.close();
 }
 
-// كود زر الفيديو
+// زر الفيديو
 (function(){
     const btn = document.getElementById('watchBtn');
     const container = document.getElementById('videoContainer');
@@ -293,6 +368,35 @@ function closePage() {
       });
     });
 })();
+
+// عرض الاختبار
+function showQuiz() {
+    document.getElementById('quiz').style.display = 'block';
+    document.getElementById('quizBtn').style.display = 'none';
+    window.scrollTo({ top: document.getElementById('quiz').offsetTop, behavior: 'smooth' });
+}
+
+// حساب النتيجة وتصحيح الأخطاء
+function checkQuiz() {
+    let score = 0;
+    const answers = { q1: "صح", q2: "صح", q3: "صح", q4: "صح", q5: "صح" };
+    let resultText = "";
+
+    for(let q in answers) {
+        const userAnswer = document.querySelector('input[name="'+q+'"]:checked');
+        if(userAnswer) {
+            if(userAnswer.value === answers[q]) {
+                score++;
+            } else {
+                resultText += `الإجابة الخاطئة في السؤال ${q.slice(1)}، الإجابة الصحيحة: ${answers[q]}\n`;
+            }
+        } else {
+            resultText += `لم يتم اختيار إجابة للسؤال ${q.slice(1)}، الإجابة الصحيحة: ${answers[q]}\n`;
+        }
+    }
+
+    document.getElementById('quizResult').innerText = `نتيجتك: ${score} / 5\n${resultText}`;
+}
 </script>
 
 </body>
